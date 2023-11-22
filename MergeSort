@@ -1,0 +1,76 @@
+import random
+import timeit
+
+def merge_sort(arr):
+    trocas = 0
+    comparacoes = 0
+
+    if len(arr) > 1:
+        mid = len(arr) // 2
+        left_half = arr[:mid]
+        right_half = arr[mid:]
+
+        trocas_left, comparacoes_left = merge_sort(left_half)
+        trocas_right, comparacoes_right = merge_sort(right_half)
+
+        trocas += trocas_left + trocas_right
+        comparacoes += comparacoes_left + comparacoes_right
+
+        i = j = k = 0
+
+        while i < len(left_half) and j < len(right_half):
+            comparacoes += 1
+            if left_half[i] < right_half[j]:
+                arr[k] = left_half[i]
+                i += 1
+            else:
+                arr[k] = right_half[j]
+                j += 1
+                trocas += 1
+            k += 1
+
+        while i < len(left_half):
+            arr[k] = left_half[i]
+            i += 1
+            k += 1
+
+        while j < len(right_half):
+            arr[k] = right_half[j]
+            j += 1
+            k += 1
+
+    return trocas, comparacoes
+
+# Função para medir o tempo de execução usando timeit
+def medir_tempo_execucao(arr):
+    return timeit.timeit(lambda: merge_sort(arr.copy()), number=1)
+
+# Geração de uma lista aleatória com 1000 elementos
+arr_1000 = [random.randint(1, 1000) for _ in range(1000)]
+
+# Medição do tempo de execução, trocas e comparações para o pior caso (array ordenado de forma decrescente)
+arr_pior_caso = list(reversed(sorted(arr_1000)))
+trocas_pior_caso, comparacoes_pior_caso = merge_sort(arr_pior_caso)
+tempo_pior_caso = medir_tempo_execucao(arr_pior_caso)
+
+# Medição do tempo de execução, trocas e comparações para o melhor caso (array já ordenado)
+arr_melhor_caso = arr_1000.copy()
+trocas_melhor_caso, comparacoes_melhor_caso = merge_sort(arr_melhor_caso)
+tempo_melhor_caso = medir_tempo_execucao(arr_melhor_caso)
+
+# Medição do tempo de execução, trocas e comparações para o caso médio (array aleatório)
+arr_caso_medio = arr_1000.copy()
+trocas_caso_medio, comparacoes_caso_medio = merge_sort(arr_caso_medio)
+tempo_caso_medio = medir_tempo_execucao(arr_caso_medio)
+
+print("Tempo de execução para o pior caso: {:.6f} segundos".format(tempo_pior_caso))
+print("Trocas para o pior caso:", trocas_pior_caso)
+print("Comparações para o pior caso:", comparacoes_pior_caso)
+
+print("\nTempo de execução para o melhor caso: {:.6f} segundos".format(tempo_melhor_caso))
+print("Trocas para o melhor caso:", trocas_melhor_caso)
+print("Comparações para o melhor caso:", comparacoes_melhor_caso)
+
+print("\nTempo de execução para o caso médio: {:.6f} segundos".format(tempo_caso_medio))
+print("Trocas para o caso médio:", trocas_caso_medio)
+print("Comparações para o caso médio:", comparacoes_caso_medio)
