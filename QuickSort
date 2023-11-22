@@ -1,0 +1,63 @@
+import random
+import timeit
+
+def quick_sort(arr):
+    trocas = 0
+    comparacoes = 0
+    quick_sort_helper(arr, 0, len(arr) - 1, trocas, comparacoes)
+    return trocas, comparacoes
+
+def quick_sort_helper(arr, low, high, trocas, comparacoes):
+    if low < high:
+        pivot_index = partition(arr, low, high, trocas, comparacoes)
+        quick_sort_helper(arr, low, pivot_index - 1, trocas, comparacoes)
+        quick_sort_helper(arr, pivot_index + 1, high, trocas, comparacoes)
+
+def partition(arr, low, high, trocas, comparacoes):
+    pivot = arr[high]
+    i = low - 1
+
+    for j in range(low, high):
+        comparacoes += 1
+        if arr[j] <= pivot:
+            i += 1
+            arr[i], arr[j] = arr[j], arr[i]
+            trocas += 1
+
+    arr[i + 1], arr[high] = arr[high], arr[i + 1]
+    trocas += 1
+    return i + 1
+
+# Função para medir o tempo de execução usando timeit
+def medir_tempo_execucao(arr):
+    return timeit.timeit(lambda: quick_sort(arr.copy()), number=1)
+
+# Geração de uma lista aleatória com 1000 elementos
+arr_1000 = [random.randint(1, 1000) for _ in range(1000)]
+
+# Medição do tempo de execução, trocas e comparações para o pior caso (array ordenado de forma decrescente)
+arr_pior_caso = list(reversed(sorted(arr_1000)))
+trocas_pior_caso, comparacoes_pior_caso = quick_sort(arr_pior_caso)
+tempo_pior_caso = medir_tempo_execucao(arr_pior_caso)
+
+# Medição do tempo de execução, trocas e comparações para o melhor caso (array já ordenado)
+arr_melhor_caso = arr_1000.copy()
+trocas_melhor_caso, comparacoes_melhor_caso = quick_sort(arr_melhor_caso)
+tempo_melhor_caso = medir_tempo_execucao(arr_melhor_caso)
+
+# Medição do tempo de execução, trocas e comparações para o caso médio (array aleatório)
+arr_caso_medio = arr_1000.copy()
+trocas_caso_medio, comparacoes_caso_medio = quick_sort(arr_caso_medio)
+tempo_caso_medio = medir_tempo_execucao(arr_caso_medio)
+
+print("Tempo de execução para o pior caso: {:.6f} segundos".format(tempo_pior_caso))
+print("Trocas para o pior caso:", trocas_pior_caso)
+print("Comparações para o pior caso:", comparacoes_pior_caso)
+
+print("\nTempo de execução para o melhor caso: {:.6f} segundos".format(tempo_melhor_caso))
+print("Trocas para o melhor caso:", trocas_melhor_caso)
+print("Comparações para o melhor caso:", comparacoes_melhor_caso)
+
+print("\nTempo de execução para o caso médio: {:.6f} segundos".format(tempo_caso_medio))
+print("Trocas para o caso médio:", trocas_caso_medio)
+print("Comparações para o caso médio:", comparacoes_caso_medio)
