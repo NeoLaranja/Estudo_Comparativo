@@ -10,22 +10,22 @@ def bubble_sort(arr):
                 arr[j], arr[j+1] = arr[j+1], arr[j]
 
 # Geração de uma lista aleatória com 1000 elementos
-arr_1000 = [random.randint(1, 1000) for _ in range(1000)]
+arr_10000 = [random.randint(1, 10000) for _ in range(10000)]
 
 # Medindo o tempo para o pior caso (array ordenado de forma decrescente)
-arr_pior_caso = list(reversed(sorted(arr_1000)))
+arr_pior_caso = list(reversed(sorted(arr_10000)))
 start_time = time.time()
 bubble_sort(arr_pior_caso)
 tempo_pior_caso = time.time() - start_time
 
 # Medindo o tempo para o melhor caso (array já ordenado)
-arr_melhor_caso = arr_1000.copy()
+arr_melhor_caso = arr_10000.copy()
 start_time = time.time()
 bubble_sort(arr_melhor_caso)
 tempo_melhor_caso = time.time() - start_time
 
 # Medindo o tempo para o caso médio (array aleatório)
-arr_caso_medio = arr_1000.copy()
+arr_caso_medio = arr_10000.copy()
 start_time = time.time()
 bubble_sort(arr_caso_medio)
 tempo_caso_medio = time.time() - start_time
