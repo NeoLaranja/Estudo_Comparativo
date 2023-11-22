@@ -1,0 +1,40 @@
+import random
+import time
+import timeit
+
+def bubble_sort(arr):
+    n = len(arr)
+    for i in range(n):
+        for j in range(0, n-i-1):
+            if arr[j] > arr[j+1]:
+                arr[j], arr[j+1] = arr[j+1], arr[j]
+
+# Geração de uma lista aleatória com 1000 elementos
+arr_1000 = [random.randint(1, 1000) for _ in range(1000)]
+
+# Medindo o tempo para o pior caso (array ordenado de forma decrescente)
+arr_pior_caso = list(reversed(sorted(arr_1000)))
+start_time = time.time()
+bubble_sort(arr_pior_caso)
+tempo_pior_caso = time.time() - start_time
+
+# Medindo o tempo para o melhor caso (array já ordenado)
+arr_melhor_caso = arr_1000.copy()
+start_time = time.time()
+bubble_sort(arr_melhor_caso)
+tempo_melhor_caso = time.time() - start_time
+
+# Medindo o tempo para o caso médio (array aleatório)
+arr_caso_medio = arr_1000.copy()
+start_time = time.time()
+bubble_sort(arr_caso_medio)
+tempo_caso_medio = time.time() - start_time
+
+print("Tempo para o pior caso: {:.6f} segundos".format(tempo_pior_caso))
+print("Tempo para o melhor caso: {:.6f} segundos".format(tempo_melhor_caso))
+print("Tempo para o caso médio: {:.6f} segundos".format(tempo_caso_medio))
+
+# Medindo o tempo de execução usando timeit
+tempo_execucao = timeit.timeit(lambda: bubble_sort(arr_1000.copy()), number=1)
+
+print("Tempo de execução: {:.6f} segundos".format(tempo_execucao))
