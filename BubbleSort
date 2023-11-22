@@ -36,5 +36,26 @@ print("Tempo para o caso médio: {:.6f} segundos".format(tempo_caso_medio))
 
 # Medindo o tempo de execução usando timeit
 tempo_execucao = timeit.timeit(lambda: bubble_sort(arr_1000.copy()), number=1)
-
 print("Tempo de execução: {:.6f} segundos".format(tempo_execucao))
+
+def bubble_sort(arr):
+    n = len(arr)
+    trocas = 0
+    comparacoes = 0
+
+    for i in range(n):
+        for j in range(0, n-i-1):
+            comparacoes += 1
+            if arr[j] > arr[j+1]:
+                arr[j], arr[j+1] = arr[j+1], arr[j]
+                trocas += 1
+
+    print("Trocas realizadas:", trocas)
+    print("Comparações realizadas:", comparacoes)
+
+# Geração de uma lista aleatória com 10 elementos para fins de demonstração
+arr_demo = [random.randint(1, 10) for _ in range(10)]
+
+# Chamada da função de ordenação
+bubble_sort(arr_demo.copy())
+print("Array ordenado:", arr_demo)
