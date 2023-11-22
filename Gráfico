@@ -1,34 +1,85 @@
 import timeit
 import matplotlib.pyplot as plt
 
+#Implementação do bubble sort
 def bubble_sort(arr):
-    # Implementação do Bubble Sort
+    n = len(arr)
 
+    for i in range(n):
+        for j in range(0, n-i-1):
+            if arr[j] > arr[j+1]:
+                arr[j], arr[j+1] = arr[j+1], arr[j]
+
+#Implementação do improved bubble sort
+def improved_bubble_sort(arr):
+    n = len(arr)
+    trocas_realizadas = True
+
+    while trocas_realizadas:
+        trocas_realizadas = False
+
+        for i in range(1, n):
+            if arr[i - 1] > arr[i]:
+                arr[i - 1], arr[i] = arr[i], arr[i - 1]
+                trocas_realizadas = True
+
+#Implementação do insertion sort
 def insertion_sort(arr):
-    # Implementação do Insertion Sort
+    for i in range(1, len(arr)):
+        key = arr[i]
+        j = i - 1
+        while j >= 0 and key < arr[j]:
+            arr[j + 1] = arr[j]
+            j -= 1
+        arr[j + 1] = key
 
+#Implementação do selection sort
 def selection_sort(arr):
-    # Implementação do Selection Sort
+     n = len(arr)
 
+    for i in range(n):
+        min_index = i
+        for j in range(i+1, n):
+            if arr[j] < arr[min_index]:
+                min_index = j
+
+        arr[i], arr[min_index] = arr[min_index], arr[i]
+
+#Implementação do quick sort
 def quick_sort(arr):
-    # Implementação do Quick Sort
+    if len(arr) <= 1:
+        return arr
+    else:
+        pivot = arr[0]
+        less = [x for x in arr[1:] if x <= pivot]
+        greater = [x for x in arr[1:] if x > pivot]
+        return quick_sort(less) + [pivot] + quick_sort(greater)
 
+#Implementação do bucket sort
 def bucket_sort(arr):
-    # Implementação do Bucket Sort
+    num_buckets = 10
+    buckets = [[] for _ in range(num_buckets)]
+
+    for num in arr:
+        index = int(num * num_buckets)
+        buckets[index].append(num)
+
+    sorted_arr = [num for bucket in buckets for num in sorted(bucket)]
 
 # Função para gerar um array aleatório de tamanho n
 def generate_random_array(n):
-    return [random.randint(1, 1000) for _ in range(n)]
+    return [random.randint(1, 100000) for _ in range(n)]
 
 # Função para medir o tempo de execução de um algoritmo
 def measure_time(algorithm, arr):
     return timeit.timeit(lambda: algorithm(arr.copy()), number=1)
 
 # Tamanhos de entrada
-sizes = [100, 500, 1000, 2000]
+sizes = [1000, 10000, 100000]
 
 # Dicionários para armazenar tempos de execução
 bubble_sort_times = {}
+improved_bubble_sort_times = {}
 insertion_sort_times = {}
 selection_sort_times = {}
 quick_sort_times = {}
@@ -38,6 +89,7 @@ for size in sizes:
     arr = generate_random_array(size)
     
     bubble_sort_times[size] = measure_time(bubble_sort, arr)
+    improved_bubble_sort_times[size] = measure_time(improved_bubble_sort, arr)
     insertion_sort_times[size] = measure_time(insertion_sort, arr)
     selection_sort_times[size] = measure_time(selection_sort, arr)
     quick_sort_times[size] = measure_time(quick_sort, arr)
@@ -45,6 +97,7 @@ for size in sizes:
 
 # Criando o gráfico
 plt.plot(sizes, list(bubble_sort_times.values()), label='Bubble Sort')
+plt.plot(sizes, list(improved_bubble_sort_times.values()), label='Improved Bubble Sort')
 plt.plot(sizes, list(insertion_sort_times.values()), label='Insertion Sort')
 plt.plot(sizes, list(selection_sort_times.values()), label='Selection Sort')
 plt.plot(sizes, list(quick_sort_times.values()), label='Quick Sort')
