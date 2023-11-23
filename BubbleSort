@@ -4,42 +4,6 @@ import timeit
 
 def bubble_sort(arr):
     n = len(arr)
-    for i in range(n):
-        for j in range(0, n-i-1):
-            if arr[j] > arr[j+1]:
-                arr[j], arr[j+1] = arr[j+1], arr[j]
-
-# Geração de uma lista aleatória com 1000 elementos
-arr_10000 = [random.randint(1, 10000) for _ in range(10000)]
-
-# Medindo o tempo para o pior caso (array ordenado de forma decrescente)
-arr_pior_caso = list(reversed(sorted(arr_10000)))
-start_time = time.time()
-bubble_sort(arr_pior_caso)
-tempo_pior_caso = time.time() - start_time
-
-# Medindo o tempo para o melhor caso (array já ordenado)
-arr_melhor_caso = arr_10000.copy()
-start_time = time.time()
-bubble_sort(arr_melhor_caso)
-tempo_melhor_caso = time.time() - start_time
-
-# Medindo o tempo para o caso médio (array aleatório)
-arr_caso_medio = arr_10000.copy()
-start_time = time.time()
-bubble_sort(arr_caso_medio)
-tempo_caso_medio = time.time() - start_time
-
-print("Tempo para o pior caso: {:.6f} segundos".format(tempo_pior_caso))
-print("Tempo para o melhor caso: {:.6f} segundos".format(tempo_melhor_caso))
-print("Tempo para o caso médio: {:.6f} segundos".format(tempo_caso_medio))
-
-# Medindo o tempo de execução usando timeit
-tempo_execucao = timeit.timeit(lambda: bubble_sort(arr_10000.copy()), number=1)
-print("Tempo de execução: {:.6f} segundos".format(tempo_execucao))
-
-def bubble_sort(arr):
-    n = len(arr)
     trocas = 0
     comparacoes = 0
 
@@ -50,12 +14,38 @@ def bubble_sort(arr):
                 arr[j], arr[j+1] = arr[j+1], arr[j]
                 trocas += 1
 
-    print("Trocas realizadas:", trocas)
-    print("Comparações realizadas:", comparacoes)
+    return trocas, comparacoes
 
-# Geração de uma lista aleatória com 10 elementos para fins de demonstração
-arr_demo = [random.randint(1, 10) for _ in range(10)]
+# Geração de uma lista aleatória com 1000 elementos
+arr_10000 = [random.randint(1, 10000) for _ in range(10000)]
 
-# Chamada da função de ordenação
-bubble_sort(arr_demo.copy())
-print("Array ordenado:", arr_demo)
+# Medindo o tempo para o pior caso (array ordenado de forma decrescente)
+arr_pior_caso = list(reversed(sorted(arr_10000)))
+start_time = time.time()
+trocas_pior_caso, comparacoes_pior_caso = bubble_sort(arr_pior_caso)
+tempo_pior_caso = time.time() - start_time
+
+# Medindo o tempo para o melhor caso (array já ordenado)
+arr_melhor_caso = arr_10000.copy()
+start_time = time.time()
+trocas_melhor_caso, comparacoes_melhor_caso = bubble_sort(arr_melhor_caso)
+tempo_melhor_caso = time.time() - start_time
+
+# Medindo o tempo para o caso médio (array aleatório)
+arr_caso_medio = arr_10000.copy()
+start_time = time.time()
+trocas_caso_medio, comparacoes_caso_medio = bubble_sort(arr_caso_medio)
+tempo_caso_medio = time.time() - start_time
+
+print("Tempo para o pior caso: {:.6f} segundos".format(tempo_pior_caso))
+print("Tempo para o melhor caso: {:.6f} segundos".format(tempo_melhor_caso))
+print("Tempo para o caso médio: {:.6f} segundos".format(tempo_caso_medio))
+
+# Imprimindo o número de trocas e comparações
+print("Trocas e comparações para o pior caso:", trocas_pior_caso, comparacoes_pior_caso)
+print("Trocas e comparações para o melhor caso:", trocas_melhor_caso, comparacoes_melhor_caso)
+print("Trocas e comparações para o caso médio:", trocas_caso_medio, comparacoes_caso_medio)
+
+# Medindo o tempo de execução usando timeit
+tempo_execucao = timeit.timeit(lambda: bubble_sort(arr_10000.copy()), number=1)
+print("Tempo de execução: {:.6f} segundos".format(tempo_execucao))
